@@ -1,6 +1,3 @@
-import { getUserInfo, updateUserInfo, updatePassword, deleteAccount as deleteAccountApi, uploadProfileImage } from '../api/userApi.js';
-import { showPage } from '../main.js';
-
 let userProfileImage = '';
 
 export function previewProfileImage(event) {
@@ -20,26 +17,26 @@ export function previewProfileImage(event) {
     }
 }
 
-export async function loadUserInfo() {
-    try {
-        const userInfo = await getUserInfo();
-        
-        // 프로필 정보 표시
-        document.getElementById('profile-email-value').textContent = userInfo.email;
-        document.getElementById('profile-nickname-value').textContent = userInfo.nickname;
-        
-        const profileImage = document.querySelector('.profile-edit-image');
-        if (profileImage && userInfo.profileImage) {
-            profileImage.style.backgroundImage = `url(${userInfo.profileImage})`;
-        }
+export function loadUserInfo() {
+    // 임시로 하드코딩된 사용자 정보
+    const userInfo = {
+        email: 'startupcoding@gmail.com',
+        nickname: '스타트업코딩',
+        profileImage: './assets/images/merong_minion.jpeg'
+    };
 
-        // 수정 모드 초기화
-        const profilePage = document.getElementById('profile-page');
-        profilePage.classList.remove('edit-mode');
-    } catch (error) {
-        alert('회원정보를 불러오는데 실패했습니다.');
-        showPage('login-page');
+    // 프로필 정보 표시
+    document.getElementById('profile-email-value').textContent = userInfo.email;
+    document.getElementById('profile-nickname-value').textContent = userInfo.nickname;
+    
+    const profileImage = document.querySelector('.profile-edit-image');
+    if (profileImage && userInfo.profileImage) {
+        profileImage.style.backgroundImage = `url(${userInfo.profileImage})`;
     }
+
+    // 수정 모드 초기화
+    const profilePage = document.getElementById('profile-page');
+    profilePage.classList.remove('edit-mode');
 }
 
 export function toggleEditMode() {
@@ -56,79 +53,43 @@ export function toggleEditMode() {
     }
 }
 
-export async function previewProfileEditImage(event) {
+export function updateProfile() {
+    const profilePage = document.getElementById('profile-page');
+    const nicknameInput = profilePage.querySelector('.edit-input');
+    
+    if (nicknameInput) {
+        // 닉네임 업데이트
+        const newNickname = nicknameInput.value;
+        document.getElementById('profile-nickname-value').textContent = newNickname;
+    }
+    
+    // 수정 모드 해제
+    profilePage.classList.remove('edit-mode');
+    alert('프로필이 수정되었습니다.');
+}
+
+export function previewProfileEditImage(event) {
     const file = event.target.files[0];
     if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-            const profileImage = document.querySelector('.profile-edit-image');
-            profileImage.style.backgroundImage = `url(${e.target.result})`;
+            const imageUrl = e.target.result;
+            document.querySelector('.profile-edit-image').style.backgroundImage = `url(${imageUrl})`;
+            userInfo.profileImage = imageUrl;
         };
         reader.readAsDataURL(file);
     }
 }
 
-export async function updateProfile() {
-    const profilePage = document.getElementById('profile-page');
-    const nicknameInput = profilePage.querySelector('.edit-input');
-    const profileImageInput = document.getElementById('profile-image-upload');
-    
-    try {
-        // 프로필 이미지 업로드
-        if (profileImageInput.files.length > 0) {
-            const formData = new FormData();
-            formData.append('profileImage', profileImageInput.files[0]);
-            await uploadProfileImage(formData);
-        }
-
-        // 닉네임 업데이트
-        if (nicknameInput) {
-            const newNickname = nicknameInput.value;
-            await updateUserInfo({ nickname: newNickname });
-            document.getElementById('profile-nickname-value').textContent = newNickname;
-        }
-        
-        // 수정 모드 해제
-        profilePage.classList.remove('edit-mode');
-        alert('프로필이 수정되었습니다.');
-    } catch (error) {
-        alert(error.message);
-    }
-}
-
-export async function updateUserPassword() {
-    const currentPassword = document.querySelector('#password-page input[type="password"]').value;
-    const newPassword = document.querySelectorAll('#password-page input[type="password"]')[1].value;
-    
-    if (!currentPassword || !newPassword) {
-        alert('현재 비밀번호와 새 비밀번호를 모두 입력해주세요.');
-        return;
-    }
-
-    try {
-        await updatePassword({
-            currentPassword,
-            newPassword
-        });
-        alert('비밀번호가 변경되었습니다.');
-        showPage('post-list-page');
-    } catch (error) {
-        alert(error.message);
-    }
-}
-
 export function showDeleteAccountModal() {
     const modal = document.getElementById('delete-account-modal');
-    modal.style.display = 'block';
+    modal.style.display = 'flex';
     document.body.classList.add('modal-open');
 }
 
-export async function deleteAccount() {
-    try {
-        await deleteAccountApi();
-        alert('회원 탈퇴가 완료되었습니다.');
-        showPage('login-page');
-    } catch (error) {
-        alert(error.message);
-    }
+export function deleteAccount() {
+    alert('회원 탈퇴가 완료되었습니다.');
+    closeModal();
+    logout();
+    showPage('login-page');
 } 
