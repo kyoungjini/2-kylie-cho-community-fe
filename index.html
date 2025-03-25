@@ -4,7 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>전국 맛집 추천 커뮤니티: 맛추픽추</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components/modal.css">
+    <link rel="stylesheet" href="styles/components/header.css">
+    <link rel="stylesheet" href="styles/pages/login.css">
+    <link rel="stylesheet" href="styles/pages/post-list.css">
+    <link rel="stylesheet" href="styles/pages/post-detail.css">
+    <link rel="stylesheet" href="styles/pages/profile-edit.css">
 </head>
 <body>
     <!-- 상단바 -->
@@ -12,8 +18,8 @@
         <div class="back-header">
             <div class="back" onclick="goBack()" style="display: none;">&lt;</div>
             <h1 class="title">😋 맛추픽추 😋</h1>
-            <div class="profile-icon" onclick="toggleProfileMenu()"></div>
-            <div id="profile-menu" class="profile-menu">
+            <div class="profile-icon"></div>
+            <div class="profile-menu">
                 <div id="profile-edit">회원정보 수정</div>
                 <div id="password-edit">비밀번호 수정</div>
                 <div id="logout">로그아웃</div>
@@ -78,14 +84,14 @@
         </div>
 
         <!-- 게시글 목록 조회 페이지 -->
-        <div id="post-list-page" class="post-container" style="display: none;">
+        <div id="post-list-page" class="container-wider" style="display: none;">
             <h2>내가 아는 맛집을 공유해주세요!</h2>
             <button onclick="showPage('post-add-page')" class="post-button">게시글 작성</button>
             <div id="posts"></div>
         </div>
 
         <!-- 게시글 작성 페이지 -->
-        <div id="post-add-page" class="container" style="display: none;">
+        <div id="post-add-page" class="container-wider" style="display: none;">
             <h2>게시글 작성</h2>
             <div class="tab">
                 <p class="tab-title">제목*</p>
@@ -104,7 +110,7 @@
         </div>
 
         <!-- 게시글 상세 조회 페이지 -->
-        <div id="post-detail-page" class="container" style="display: none;">
+        <div id="post-detail-page" class="container-wider" style="display: none;">
             <div class="post-header">
                 <h2 id="post-title" class="post-title">제목</h2>
                 <div class="post-info">
@@ -181,7 +187,7 @@
         </div>
 
         <!-- 게시글 수정 페이지 -->
-        <div id="post-edit-page" class="container" style="display: none;">
+        <div id="post-edit-page" class="container-wider" style="display: none;">
             <h2>게시글 수정</h2>
             <div class="tab">
                 <p class="tab-title">제목*</p>
@@ -200,7 +206,7 @@
         </div>
 
         <!-- 회원정보 수정 페이지 -->
-        <div id="profile-page" class="profile-page" style="display: none;">
+        <div id="profile-page" class="container" style="display: none;">
             <h2>회원정보 수정</h2>
             <div class="profile-edit-section">
                 <div class="info-group">
@@ -263,7 +269,40 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module">
+        import { showPage, goBack } from './js/main.js';
+        import { login, logout, register } from './js/pages/login.js';
+        import { addPost, viewPost, updatePost, deletePost, showEditPage } from './js/components/post.js';
+        import { addComment, editComment, saveComment, cancelEdit, deleteComment } from './js/components/comment.js';
+        import { previewProfileImage, loadUserInfo, toggleEditMode, updateProfile, previewProfileEditImage, showDeleteAccountModal, deleteAccount } from './js/components/profile.js';
+        import { showDeleteModal, closeModal } from './js/components/modal.js';
+
+        // 전역 스코프에 함수 노출
+        window.showPage = showPage;
+        window.goBack = goBack;
+        window.login = login;
+        window.logout = logout;
+        window.register = register;
+        window.addPost = addPost;
+        window.viewPost = viewPost;
+        window.updatePost = updatePost;
+        window.deletePost = deletePost;
+        window.showEditPage = showEditPage;
+        window.addComment = addComment;
+        window.editComment = editComment;
+        window.saveComment = saveComment;
+        window.cancelEdit = cancelEdit;
+        window.deleteComment = deleteComment;
+        window.previewProfileImage = previewProfileImage;
+        window.loadUserInfo = loadUserInfo;
+        window.toggleEditMode = toggleEditMode;
+        window.updateProfile = updateProfile;
+        window.previewProfileEditImage = previewProfileEditImage;
+        window.showDeleteAccountModal = showDeleteAccountModal;
+        window.deleteAccount = deleteAccount;
+        window.showDeleteModal = showDeleteModal;
+        window.closeModal = closeModal;
+    </script>
 
 </body>
 </html>

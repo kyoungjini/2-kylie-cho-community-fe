@@ -32,18 +32,18 @@
 
 <table>
   <tr>
-    <td><img src="image/community-fe-login.png" width="300" /></td>
-    <td><img src="image/community-fe-register.png" width="300" /></td>
-    <td><img src="image/community-fe-post-list.png" width="300" /></td>
+    <td><img src="assets/images/community-fe-login.png" width="300" /></td>
+    <td><img src="assets/images/community-fe-register.png" width="300" /></td>
+    <td><img src="assets/images/community-fe-post-list.png" width="300" /></td>
   </tr>
   <tr>
-    <td><img src="image/community-fe-add-post.png" width="300" /></td>
-    <td><img src="image/community-fe-post-detail.png" width="300" /></td>
-    <td><img src="image/community-fe-update-post.png" width="300" /></td>
+    <td><img src="assets/images/community-fe-add-post.png" width="300" /></td>
+    <td><img src="assets/images/community-fe-post-detail.png" width="300" /></td>
+    <td><img src="assets/images/community-fe-update-post.png" width="300" /></td>
   </tr>
   <tr>
-    <td><img src="image/community-fe-post-delete-modal.png" width="300" /></td>
-    <td><img src="image/community-fe-update-password.png" width="300" /></td>
+    <td><img src="assets/images/community-fe-post-delete-modal.png" width="300" /></td>
+    <td><img src="assets/images/community-fe-update-password.png" width="300" /></td>
     <td></td>
   </tr>
 </table>
@@ -65,23 +65,23 @@
 ## 실행 화면 - 4차 과제
 <table>
   <tr>
-    <td><img src="image/login-page.png" width="300" /></td>
-    <td><img src="image/signup-page.png" width="300" /></td>
-    <td><img src="image/post-list-page.png" width="300" /></td>
+    <td><img src="assets/images/login-page.png" width="300" /></td>
+    <td><img src="assets/images/signup-page.png" width="300" /></td>
+    <td><img src="assets/images/post-list-page.png" width="300" /></td>
   </tr>
   <tr>
-    <td><img src="image/post-create-page.png" width="300" /></td>
-    <td><img src="image/post-detail-page.png" width="300" /></td>
-    <td><img src="image/post-update-page.png" width="300" /></td>
+    <td><img src="assets/images/post-create-page.png" width="300" /></td>
+    <td><img src="assets/images/post-detail-page.png" width="300" /></td>
+    <td><img src="assets/images/post-update-page.png" width="300" /></td>
   </tr>
   <tr>
-    <td><img src="image/info-update-before-page.png" width="300" /></td>
-    <td><img src="image/info-update-after-page.png" width="300" /></td>
-    <td><img src="image/password-update-page.png" width="300" /></td>
+    <td><img src="assets/images/info-update-before-page.png" width="300" /></td>
+    <td><img src="assets/images/info-update-after-page.png" width="300" /></td>
+    <td><img src="assets/images/password-update-page.png" width="300" /></td>
   </tr>
   <tr>
-    <td><img src="image/menubar.png" width="300" /></td>
-    <td><img src="image/comment-update.png" width="300" /></td>
+    <td><img src="assets/images/menubar.png" width="300" /></td>
+    <td><img src="assets/images/comment-update.png" width="300" /></td>
     <td></td>
   </tr>
 </table>
