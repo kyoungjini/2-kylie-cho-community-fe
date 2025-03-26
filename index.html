@@ -169,7 +169,7 @@
                 <p class="modal-warning">삭제한 내용은 복구할 수 없습니다.</p>
                 <div class="modal-button-wrapper">
                     <button onclick="closeModal()" class="modal-cancel-button">취소</button>
-                    <button onclick="deletePost()" class="modal-ok-button">확인</button>
+                    <button onclick="deleteCurrentPost()" class="modal-ok-button">확인</button>
                 </div>
             </div>
         </div>
@@ -202,7 +202,7 @@
                 <p class="tab-title">이미지</p>
                 <input type="file" class="input-img" accept="image/*">
             </div>
-            <button onclick="updatePost()">수정하기</button>
+            <button onclick="updateCurrentPost()">수정하기</button>
         </div>
 
         <!-- 회원정보 수정 페이지 -->
@@ -277,7 +277,7 @@
     <script type="module">
         import { showPage, goBack } from './js/main.js';
         import { login, logout, handleRegister } from './js/pages/login.js';
-        import { addPost, viewPost, updatePost, deletePost, showEditPage } from './js/components/post.js';
+        import { addPost, viewPost, updateCurrentPost, deleteCurrentPost, showEditPage } from './js/components/post.js';
         import { addComment, editComment, saveComment, cancelEdit, deleteComment } from './js/components/comment.js';
         import { previewProfileImage, loadUserInfo, toggleEditMode, updateProfile, previewProfileEditImage, showDeleteAccountModal, deleteAccount, updateUserPassword } from './js/components/profile.js';
         import { showDeleteModal, closeModal } from './js/components/modal.js';
@@ -290,8 +290,8 @@
         window.handleRegister = handleRegister;
         window.addPost = addPost;
         window.viewPost = viewPost;
-        window.updatePost = updatePost;
-        window.deletePost = deletePost;
+        window.updateCurrentPost = updateCurrentPost;
+        window.deleteCurrentPost = deleteCurrentPost;
         window.showEditPage = showEditPage;
         window.addComment = addComment;
         window.editComment = editComment;

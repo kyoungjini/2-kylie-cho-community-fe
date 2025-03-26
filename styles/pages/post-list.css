@@ -65,11 +65,10 @@
     gap: 8px;
 } 
 
-.post-author::before {
-    content: '';
-    display: inline-block;
+.author-profile-image {
     width: 24px;
     height: 24px;
-    background: #e0e0e0;
+    background-color: #e0e0e0;
     border-radius: 50%;
+    object-fit: cover;
 }
