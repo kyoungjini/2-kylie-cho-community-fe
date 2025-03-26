@@ -33,15 +33,7 @@ export async function getPostById(postId) {
             throw new Error('게시글을 불러오는데 실패했습니다.');
         }
 
-        const post = await response.json();
-        
-        // 헤더에서 조회수, 댓글수, 좋아요수 추출
-        return {
-            ...post,
-            viewCount: parseInt(response.headers.get('viewCount') || '0'),
-            commentCount: parseInt(response.headers.get('commentCount') || '0'),
-            heartCount: parseInt(response.headers.get('heartCount') || '0')
-        };
+        return await response.json();
     } catch (error) {
         console.error('게시글 상세 조회 에러:', error);
         throw error;

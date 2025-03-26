@@ -31,11 +31,14 @@ function displayPosts(posts) {
             imageUrl = `${API_BASE_URL}/${imageUrl}`;
         }
 
-        // 작성자 정보 처리 (author 객체 사용)
-        const authorName = post.author?.nickname || '알 수 없음';
-        let authorProfileImage = post.author?.profileImage;
+        // 작성자 정보
+        const authorName = post.user?.nickname || '알 수 없음';
 
-        if (!authorProfileImage.startsWith('http')) {
+        // 작성자 프로필 이미지
+        let authorProfileImage = post.user?.profileImage;
+        if (!authorProfileImage) {
+            authorProfileImage = 'https://blog.kakaocdn.net/dn/bCXLP7/btrQuNirLbt/N30EKpk07InXpbReKWzde1/img.png';
+        } else if (!authorProfileImage.startsWith('http')) {
             authorProfileImage = `${API_BASE_URL}/${authorProfileImage}`;
         }
 
@@ -60,6 +63,7 @@ function displayPosts(posts) {
                     </div>
                     <p>${formattedDate}</p>
                 </div>
+                <div class="post-brief-divider"></div>
                 <div class="post-author">
                     <img src="${authorProfileImage}" alt="프로필 이미지" class="author-profile-image">
                     <span>${authorName}</span>
@@ -72,7 +76,7 @@ function displayPosts(posts) {
 }
 
 // 게시글 상세 조회
-export async function viewPost(postId) {
+async function viewPost(postId) {
     try {
         const post = await getPostById(postId);
         currentPost = post;
@@ -86,33 +90,65 @@ export async function viewPost(postId) {
 
 // 게시글 상세 정보 표시
 function displayPostDetails(post) {
-    document.getElementById('post-title').innerText = post.title;
-    
-    
-    document.getElementById('post-author').innerText = (post.user ? post.user.nickname : '알 수 없음');
+    // 게시글 제목
+    const postTitle = document.getElementById('post-title');
+    if (postTitle) postTitle.innerText = post.title || '제목 없음';
+
+    // 작성자 닉네임
+    const postAuthor = document.getElementById('post-author');
+    if (postAuthor) postAuthor.innerText = post.user?.nickname || '알 수 없음';
+
+    // 작성자 프로필 이미지
+    const postAuthorProfileImage = document.getElementById('post-author-image');
+    if (postAuthorProfileImage) {
+        let profileImageUrl = post.user?.profileImage;
+        if (!profileImageUrl) {
+            profileImageUrl = 'https://blog.kakaocdn.net/dn/bCXLP7/btrQuNirLbt/N30EKpk07InXpbReKWzde1/img.png';
+        } else if (!profileImageUrl.startsWith('http')) {
+            profileImageUrl = `${API_BASE_URL}/${profileImageUrl}`;
+        }
+        postAuthorProfileImage.src = profileImageUrl;
+        postAuthorProfileImage.alt = '작성자 프로필 이미지';
+    }
+
+    // 작성일
     document.getElementById('post-date').innerText = new Date(post.createdAt).toLocaleString();
     
+    // 게시글 이미지 
     const postImage = document.getElementById('post-image');
-    if (post.image) {
-        const imageUrl = post.image.startsWith('http') ? post.image : `${API_BASE_URL}/${post.image}`;
-        postImage.innerHTML = `<img src="${imageUrl}" alt="게시글 이미지">`;
-        postImage.style.display = 'block';
-    } else {
-        postImage.style.display = 'none';
+    if (postImage) {
+        if (post.image) {
+            const imageUrl = post.image.startsWith('http') ? post.image : `${API_BASE_URL}/${post.image}`;
+            postImage.innerHTML = `<img src="${imageUrl}" alt="게시글 이미지">`;
+            postImage.style.display = 'block';
+        } else {
+            postImage.style.display = 'none';
+        }
     }
     
-    document.getElementById('post-content').innerText = post.content;
-    document.getElementById('like-count').innerText = post.heartCount;
-    document.getElementById('comment-count').innerText = post.commentCount;
-    document.getElementById('view-count').innerText = post.viewCount;
+    // 게시글 내용
+    const postContent = document.getElementById('post-content');
+    if (postContent) postContent.innerText = post.content || '내용 없음';
+
+    // 좋아요 수, 댓글 수, 조회 수
+    const likeCount = document.getElementById('like-count');
+    if (likeCount) likeCount.innerText = post.heartCount || 0;
+
+    const commentCount = document.getElementById('comment-count');
+    if (commentCount) commentCount.innerText = post.commentCount || 0;
+
+    const viewCount = document.getElementById('view-count');
+    if (viewCount) viewCount.innerText = post.viewCount || 0;
 
     // 작성자인 경우에만 수정/삭제 버튼 표시
     const userId = localStorage.getItem('userId');
     const postActions = document.querySelector('.post-actions');
-    if (post.user.id.toString() === userId) {
-        postActions.style.display = 'flex';
-    } else {
-        postActions.style.display = 'none';
+    if (postActions) {
+        if (post.user?.id?.toString() === userId) {
+            postActions.style.display = 'flex';
+        } else {
+            postActions.style.display = 'none';
+        }
     }
 }
 

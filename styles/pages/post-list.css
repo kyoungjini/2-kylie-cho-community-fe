@@ -47,12 +47,18 @@
     font-size: 14px;
     font-weight: bold;
     color: #666;
-    border-bottom: 1px solid #ddd;
 }
 
 .post-stats-left {
     display: flex;
     gap: 15px;
+}
+
+.post-brief-divider {
+    height: 1px;
+    background: #ddd;
+    margin-top: 5px;
+    margin-bottom: 15px;
 }
 
 .post-author {
@@ -61,7 +67,6 @@
     font-size: 14px;
     color: #333;
     font-weight: 600;
-    padding-top: 10px;
     gap: 8px;
 } 
 

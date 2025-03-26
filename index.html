@@ -115,8 +115,11 @@
                 <h2 id="post-title" class="post-title">제목</h2>
                 <div class="post-info">
                     <div class="post-meta">
-                        <p id="post-author">작성자 이름</p>
-                        <p id="post-date">2021-01-01 00:00:00</p>
+                        <div class="post-author">
+                            <img id="post-author-image" class="author-profile-image" src="" alt="작성자 프로필 이미지">
+                            <span id="post-author"></span>
+                        </div>
+                        <p id="post-date"></p>
                     </div>
                     <div class="post-actions">
                         <button onclick="showEditPage()" class="post-detail-button">수정</button>
@@ -128,22 +131,22 @@
             <div class="divider"></div>
 
             <div class="post-image-content-container">
-                <div id="post-image"></div>
+                <div id="post-image" style="display: none;"></div>
                 <p id="post-content">내용</p>
             </div>
 
             <div class="post-stats">
                 <div class="stat-box">
                     <span class="stat-label">좋아요</span>
-                    <span class="stat-value" id="post-like-count">0</span>
+                    <span class="stat-value" id="like-count">0</span>
                 </div>
                 <div class="stat-box">
                     <span class="stat-label">조회수</span>
-                    <span class="stat-value" id="post-view-count">0</span>
+                    <span class="stat-value" id="view-count">0</span>
                 </div>
                 <div class="stat-box">
                     <span class="stat-label">댓글</span>
-                    <span class="stat-value" id="post-comment-count">0</span>
+                    <span class="stat-value" id="comment-count">0</span>
                 </div>
             </div>
 
@@ -277,7 +280,7 @@
     <script type="module">
         import { showPage, goBack } from './js/main.js';
         import { login, logout, handleRegister } from './js/pages/login.js';
-        import { addPost, viewPost, updateCurrentPost, deleteCurrentPost, showEditPage } from './js/components/post.js';
+        import { addPost, updateCurrentPost, deleteCurrentPost, showEditPage } from './js/components/post.js';
         import { addComment, editComment, saveComment, cancelEdit, deleteComment } from './js/components/comment.js';
         import { previewProfileImage, loadUserInfo, toggleEditMode, updateProfile, previewProfileEditImage, showDeleteAccountModal, deleteAccount, updateUserPassword } from './js/components/profile.js';
         import { showDeleteModal, closeModal } from './js/components/modal.js';
@@ -289,7 +292,7 @@
         window.logout = logout;
         window.handleRegister = handleRegister;
         window.addPost = addPost;
-        window.viewPost = viewPost;
+        // window.viewPost = viewPost;
         window.updateCurrentPost = updateCurrentPost;
         window.deleteCurrentPost = deleteCurrentPost;
         window.showEditPage = showEditPage;
