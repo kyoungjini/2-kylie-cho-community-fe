@@ -1,5 +1,5 @@
 import { loadPosts } from './components/post.js';
-import { login, logout, register } from './pages/login.js';
+import { login, logout, handleRegister } from './pages/login.js';
 import { loadUserInfo } from './components/profile.js';
 
 let currentPage = 'login-page';

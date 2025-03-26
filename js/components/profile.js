@@ -1,44 +1,84 @@
+import { getUserInfo, updateUserInfo, updatePassword, deleteAccount as deleteAccountApi, uploadProfileImage } from '../api/userApi.js';
+import { showPage } from '../main.js';
+import { API_BASE_URL } from '../api/config.js';
+
 let userProfileImage = '';
 
+// 이미지 미리보기 함수
 export function previewProfileImage(event) {
     const file = event.target.files[0];
+    if (!file) return;
+    
     const reader = new FileReader();
     const profileUploadDiv = document.querySelector('.profile-upload');
 
+    if (!profileUploadDiv) {
+        console.error("❌ 프로필 업로드 요소를 찾을 수 없습니다.");
+        return;
+    }
+
     reader.onload = function () {
         const uploadedImageUrl = reader.result;
+
         profileUploadDiv.style.backgroundImage = `url(${uploadedImageUrl})`;
         profileUploadDiv.classList.add('with-uploaded-image');
         profileUploadDiv.classList.remove('with-default-image');
     };
 
-    if (file) {
-        reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
+}
+
+// 프로필 정보 로드
+export async function loadUserInfo() {
+    try {
+        const userInfo = await getUserInfo();
+        
+        // 프로필 정보 표시
+        document.getElementById('profile-email-value').textContent = userInfo.email;
+        document.getElementById('profile-nickname-value').textContent = userInfo.nickname;
+        
+        // // ✅ 프로필 이미지 URL이 상대 경로면 API_BASE_URL 추가
+        // let profileImageUrl = userInfo.profileImage;
+        // if (profileImageUrl && !profileImageUrl.startsWith('http')) {
+        //     profileImageUrl = `${API_BASE_URL}${profileImageUrl}`;
+        // }
+
+        // 프로필 이미지 표시
+        const profileImage = document.querySelector('.profile-edit-image');
+        if (profileImage && userInfo.profileImage) {
+            // profileImage.style.backgroundImage = `url(${profileImageUrl})`;
+            
+            const imageUrl = userInfo.profileImage.startsWith('http')
+            ? userInfo.profileImage  // 기본 이미지 URL 그대로 사용
+            : `${API_BASE_URL}${userInfo.profileImage}`;  // 상대 경로일 경우 백엔드 주소 추가
+
+            console.log("🔍 최종 프로필 이미지 URL:", imageUrl);
+            profileImage.style.backgroundImage = `url(${imageUrl})`;
+        }
+
+        // 헤더의 프로필 아이콘에도 이미지 설정
+        const profileIcon = document.querySelector('.profile-icon');
+        if (profileIcon && userInfo.profileImage) {
+            // profileIcon.style.backgroundImage = `url(${profileImageUrl})`;
+        
+            const imageUrl = userInfo.profileImage.startsWith('http')
+                ? userInfo.profileImage
+                : `${API_BASE_URL}${userInfo.profileImage}`;
+
+            console.log("🔍 헤더 프로필 아이콘 이미지 URL:", imageUrl);
+            profileIcon.style.backgroundImage = `url(${imageUrl})`;
+        }
+
+        // 수정 모드 초기화
+        const profilePage = document.getElementById('profile-page');
+        profilePage.classList.remove('edit-mode');
+    } catch (error) {
+        alert('회원정보를 불러오는데 실패했습니다.');
+        console.error(error);
     }
 }
 
-export function loadUserInfo() {
-    // 임시로 하드코딩된 사용자 정보
-    const userInfo = {
-        email: 'startupcoding@gmail.com',
-        nickname: '스타트업코딩',
-        profileImage: './assets/images/merong_minion.jpeg'
-    };
-
-    // 프로필 정보 표시
-    document.getElementById('profile-email-value').textContent = userInfo.email;
-    document.getElementById('profile-nickname-value').textContent = userInfo.nickname;
-    
-    const profileImage = document.querySelector('.profile-edit-image');
-    if (profileImage && userInfo.profileImage) {
-        profileImage.style.backgroundImage = `url(${userInfo.profileImage})`;
-    }
-
-    // 수정 모드 초기화
-    const profilePage = document.getElementById('profile-page');
-    profilePage.classList.remove('edit-mode');
-}
-
+// 수정 모드 전환
 export function toggleEditMode() {
     const profilePage = document.getElementById('profile-page');
     const nicknameValue = document.getElementById('profile-nickname-value');
@@ -53,43 +93,98 @@ export function toggleEditMode() {
     }
 }
 
-export function updateProfile() {
-    const profilePage = document.getElementById('profile-page');
-    const nicknameInput = profilePage.querySelector('.edit-input');
-    
-    if (nicknameInput) {
-        // 닉네임 업데이트
-        const newNickname = nicknameInput.value;
-        document.getElementById('profile-nickname-value').textContent = newNickname;
-    }
-    
-    // 수정 모드 해제
-    profilePage.classList.remove('edit-mode');
-    alert('프로필이 수정되었습니다.');
-}
-
+// 프로필 이미지 미리보기
 export function previewProfileEditImage(event) {
     const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const imageUrl = e.target.result;
-            document.querySelector('.profile-edit-image').style.backgroundImage = `url(${imageUrl})`;
-            userInfo.profileImage = imageUrl;
-        };
-        reader.readAsDataURL(file);
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const profileImage = document.querySelector('.profile-edit-image');
+        profileImage.style.backgroundImage = `url(${e.target.result})`;
+    };
+    reader.readAsDataURL(file);
+}
+
+// 프로필 업데이트
+export async function updateProfile() {
+    try {
+        const profilePage = document.getElementById('profile-page');
+        const nicknameInput = profilePage.querySelector('.edit-input');
+        const profileImageInput = document.getElementById('profile-image-upload');
+        
+        // 닉네임 업데이트
+        if (nicknameInput) {
+            const newNickname = nicknameInput.value;
+            await updateUserInfo({ nickname: newNickname });
+            document.getElementById('profile-nickname-value').textContent = newNickname;
+        }
+        
+        // 프로필 이미지 업로드
+        if (profileImageInput.files.length > 0) {
+            const formData = new FormData();
+            formData.append('file', profileImageInput.files[0]);
+            const response = await uploadProfileImage(formData);
+            
+            // 헤더의 프로필 아이콘에도 이미지 업데이트
+            if (response.profileImage) {
+                document.querySelector('.profile-icon').style.backgroundImage = `url(${response.profileImage})`;
+            }
+        }
+        
+        // 수정 모드 해제
+        profilePage.classList.remove('edit-mode');
+        alert('프로필이 수정되었습니다.');
+    } catch (error) {
+        alert(error.message);
     }
 }
 
+// 비밀번호 변경
+export async function updateUserPassword() {
+    try {
+        const currentPassword = document.querySelector('#password-page input[type="password"]').value;
+        const newPassword = document.querySelectorAll('#password-page input[type="password"]')[1].value;
+        const confirmPassword = document.querySelectorAll('#password-page input[type="password"]')[2]?.value;
+        
+        if (!currentPassword || !newPassword) {
+            alert('현재 비밀번호와 새 비밀번호를 모두 입력해주세요.');
+            return;
+        }
+        
+        if (confirmPassword && newPassword !== confirmPassword) {
+            alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        await updatePassword({
+            currentPassword,
+            newPassword
+        });
+        
+        alert('비밀번호가 변경되었습니다.');
+        showPage('post-list-page');
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+// 회원 탈퇴 모달 표시
 export function showDeleteAccountModal() {
     const modal = document.getElementById('delete-account-modal');
-    modal.style.display = 'flex';
+    modal.style.display = 'block';
     document.body.classList.add('modal-open');
 }
 
-export function deleteAccount() {
-    alert('회원 탈퇴가 완료되었습니다.');
-    closeModal();
-    logout();
-    showPage('login-page');
+// 회원 탈퇴 처리
+export async function deleteAccount() {
+    try {
+        await deleteAccountApi();
+        alert('회원 탈퇴가 완료되었습니다.');
+        document.body.classList.remove('modal-open');
+        document.getElementById('delete-account-modal').style.display = 'none';
+        showPage('login-page');
+    } catch (error) {
+        alert(error.message);
+    }
 } 
