@@ -1,4 +1,4 @@
-import { loadPosts } from './components/post.js';
+import { addPost, loadPosts } from './components/post.js';
 import { login, logout, handleRegister } from './pages/login.js';
 import { loadUserInfo } from './components/profile.js';
 
@@ -41,7 +41,7 @@ function updateBackButton() {
 
 // DOMContentLoaded 이벤트에서 모든 이벤트 리스너 등록
 document.addEventListener('DOMContentLoaded', () => {
-    // 프로필 아이콘과 메뉴 요소
+    const submitButton = document.querySelector('.post-submit-button');
     const profileIcon = document.querySelector('.profile-icon');
     const profileMenu = document.querySelector('.profile-menu');
     const backButton = document.querySelector('.back');
@@ -56,6 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
         profileIcon.addEventListener('click', (e) => {
             e.stopPropagation();
             profileMenu.classList.toggle('show');
+        });
+    }
+
+    // 게시글 작성 완료 버튼 클릭 이벤트
+    if (submitButton) {
+        submitButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            addPost(e);
         });
     }
 

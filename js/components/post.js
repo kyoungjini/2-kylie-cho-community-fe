@@ -155,10 +155,10 @@ function displayPostDetails(post) {
 // 게시글 작성
 export async function addPost(event) {
     event.preventDefault();
-    
+
     const title = document.getElementById('post-add-title').value;
     const content = document.getElementById('post-add-content').value;
-    const imageFile = document.getElementById('post-add-image').files[0];
+    const imageFile = document.getElementById('post-add-image')?.files[0];
 
     if (!title || !content) {
         alert('제목과 내용을 모두 입력해주세요.');

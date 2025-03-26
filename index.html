@@ -95,18 +95,18 @@
             <h2>게시글 작성</h2>
             <div class="tab">
                 <p class="tab-title">제목*</p>
-                <input type="text" placeholder="제목을 입력해주세요. (최대 26글자)">
+                <input id="post-add-title" type="text" placeholder="제목을 입력해주세요. (최대 26글자)">
             </div>
             <div class="tab">
                 <p class="tab-title">내용*</p>
-                <textarea placeholder="내용을 입력해주세요."></textarea>
+                <textarea id="post-add-content" placeholder="내용을 입력해주세요."></textarea>
                 <p class="helper-txt">* helper text</p>
             </div>
             <div class="tab">
                 <p class="tab-title">이미지</p>
-                <input type="file" class="input-img" accept="image/*">
+                <input id="post-add-image" type="file" class="input-img" accept="image/*">
             </div>
-            <button onclick="addPost()">완료</button>
+            <button class="post-submit-button">완료</button>
         </div>
 
         <!-- 게시글 상세 조회 페이지 -->

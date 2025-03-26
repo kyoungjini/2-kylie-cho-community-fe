@@ -40,7 +40,7 @@ export async function getPostById(postId) {
     }
 }
 
-// 게시글 생성
+// 게시글 작성
 export async function createPost(title, content, imageFile) {
     try {
         const formData = new FormData();
