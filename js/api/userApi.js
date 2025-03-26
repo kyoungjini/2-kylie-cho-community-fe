@@ -112,7 +112,17 @@ export async function updateUserInfo(userData) {
             throw new Error('회원정보 수정에 실패했습니다.');
         }
 
-        return await response.json();
+        // return await response.json();
+
+
+        const userInfo = await response.json();
+
+        // ✅ 프로필 이미지 URL이 상대 경로라면 서버 주소를 추가
+        if (userInfo.profileImage && !userInfo.profileImage.startsWith('http')) {
+            userInfo.profileImage = `${API_BASE_URL}/${userInfo.profileImage}`;
+        }
+
+        return userInfo;
     } catch (error) {
         throw error;
     }
@@ -136,16 +146,7 @@ export async function updatePassword(passwordData) {
             throw new Error('비밀번호 변경에 실패했습니다.');
         }
 
-        // return await response.json();
-
-        const userInfo = await response.json();
-
-        // ✅ 프로필 이미지 URL이 상대 경로라면 서버 주소를 추가
-        if (userInfo.profileImage && !userInfo.profileImage.startsWith('http')) {
-            userInfo.profileImage = `${API_BASE_URL}${userInfo.profileImage}`;
-        }
-
-        return userInfo;
+        return await response.json();
 
     } catch (error) {
         throw error;

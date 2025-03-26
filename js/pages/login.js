@@ -18,21 +18,34 @@ export async function login(event) {
 
     try {
         const response = await loginApi({ email, password });
-        document.querySelector('.profile-icon').style.display = 'block';
+        const profileIcon = document.querySelector('.profile-icon');
         
-        // ✅ 프로필 이미지 URL이 상대 경로면 API_BASE_URL 추가
-        let profileImageUrl = response.profileImage;
-        if (profileImageUrl && !profileImageUrl.startsWith('http')) {
-            profileImageUrl = `${API_BASE_URL}${profileImageUrl}`;
-        }
+        if (profileIcon) {
+            // 프로필 아이콘 표시
+            profileIcon.style.display = 'block';
+            
+            // 프로필 이미지 URL 처리
+            let profileImageUrl = response.profileImage;
+            
+            // 상대 경로인 경우 API_BASE_URL 추가
+            if (profileImageUrl && !profileImageUrl.startsWith('http')) {
+                profileImageUrl = `${API_BASE_URL}/${profileImageUrl}`;
+            }
 
-        // 프로필 이미지가 있으면 프로필 아이콘에 설정
-        if (profileImageUrl) {
-            document.querySelector('.profile-icon').style.backgroundImage = `url(${profileImageUrl})`;
+            // 프로필 이미지 설정 (기본 이미지 또는 사용자 업로드 이미지)
+            if (profileImageUrl) {
+                console.log("🖼️ 프로필 이미지 설정:", profileImageUrl);
+                profileIcon.style.backgroundImage = `url(${profileImageUrl})`;
+                profileIcon.style.backgroundSize = 'cover';
+                profileIcon.style.backgroundPosition = 'center';
+            }
+        } else {
+            console.error("❌ 프로필 아이콘 요소를 찾을 수 없습니다.");
         }
         
         showPage('post-list-page');
     } catch (error) {
+        console.error("❌ 로그인 에러:", error);
         alert(error.message);
     }
 }

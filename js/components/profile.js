@@ -50,7 +50,7 @@ export async function loadUserInfo() {
             
             const imageUrl = userInfo.profileImage.startsWith('http')
             ? userInfo.profileImage  // 기본 이미지 URL 그대로 사용
-            : `${API_BASE_URL}${userInfo.profileImage}`;  // 상대 경로일 경우 백엔드 주소 추가
+            : `${API_BASE_URL}/${userInfo.profileImage}`;  // 상대 경로일 경우 백엔드 주소 추가
 
             console.log("🔍 최종 프로필 이미지 URL:", imageUrl);
             profileImage.style.backgroundImage = `url(${imageUrl})`;
@@ -63,7 +63,7 @@ export async function loadUserInfo() {
         
             const imageUrl = userInfo.profileImage.startsWith('http')
                 ? userInfo.profileImage
-                : `${API_BASE_URL}${userInfo.profileImage}`;
+                : `${API_BASE_URL}/${userInfo.profileImage}`;
 
             console.log("🔍 헤더 프로필 아이콘 이미지 URL:", imageUrl);
             profileIcon.style.backgroundImage = `url(${imageUrl})`;
