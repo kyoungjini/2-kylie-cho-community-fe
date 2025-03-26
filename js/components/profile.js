@@ -152,15 +152,14 @@ export async function updateUserPassword() {
             return;
         }
 
-        await updatePassword({
-            currentPassword,
-            newPassword
-        });
+        // console.log("📌 비밀번호 변경 요청:", { currentPassword, newPassword });
+
+        await updatePassword(currentPassword, newPassword);
         
         alert('비밀번호가 변경되었습니다.');
         showPage('post-list-page');
     } catch (error) {
-        alert(error.message);
+        alert(error.message || '비밀번호 변경에 실패했습니다.');
     }
 }
 

@@ -24,7 +24,6 @@ export async function register(userData) {
         });
 
         if (!response.ok) {
-            // throw new Error('회원가입에 실패했습니다.');
             const errorResponse = await response.json();
             console.error("❌ 회원가입 실패:", errorResponse);
             throw new Error(errorResponse.message || '회원가입에 실패했습니다.');
@@ -36,6 +35,32 @@ export async function register(userData) {
         throw error;
     }
 }
+
+// 프로필 이미지 업로드
+export async function uploadProfileImage(formData) {
+    try {
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            throw new Error('로그인이 필요합니다.');
+        }
+
+        const response = await fetch(`${API_BASE_URL}/api/users/${userId}/profile-image`, {
+            method: 'POST',
+            headers: {
+                'Authorization': getHeaders().Authorization
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('프로필 이미지 업로드에 실패했습니다.');
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw error;
+    }
+} 
 
 // 로그인
 export async function login(credentials) {
@@ -52,12 +77,10 @@ export async function login(credentials) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            // body: JSON.stringify(credentials)
             body: JSON.stringify(loginData)
         });
 
         if (!response.ok) {
-            // throw new Error('로그인에 실패했습니다.');
             const errorText = await response.text();
             console.error("Error:", errorText);
         }
@@ -126,7 +149,7 @@ export async function updateUserInfo(formData) {
 }
 
 // 비밀번호 변경
-export async function updatePassword(passwordData) {
+export async function updatePassword(oldPassword, newPassword) {
     try {
         const userId = localStorage.getItem('userId');
         if (!userId) {
@@ -135,17 +158,21 @@ export async function updatePassword(passwordData) {
 
         const response = await fetch(`${API_BASE_URL}/api/users/${userId}/change-password`, {
             method: 'PUT',
-            headers: getHeaders(),
-            body: JSON.stringify(passwordData)
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ oldPassword, newPassword })
         });
 
         if (!response.ok) {
-            throw new Error('비밀번호 변경에 실패했습니다.');
+            const errorData = await response.json();
+            throw new Error(errorData.message || '비밀번호 변경에 실패했습니다.');
         }
 
-        return await response.json();
+        return await response.text();
 
     } catch (error) {
+        console.error("⚠ 비밀번호 변경 오류:", error);
         throw error;
     }
 }
@@ -173,29 +200,3 @@ export async function deleteAccount() {
         throw error;
     }
 }
-
-// 프로필 이미지 업로드
-export async function uploadProfileImage(formData) {
-    try {
-        const userId = localStorage.getItem('userId');
-        if (!userId) {
-            throw new Error('로그인이 필요합니다.');
-        }
-
-        const response = await fetch(`${API_BASE_URL}/api/users/${userId}/profile-image`, {
-            method: 'POST',
-            headers: {
-                'Authorization': getHeaders().Authorization
-            },
-            body: formData
-        });
-
-        if (!response.ok) {
-            throw new Error('프로필 이미지 업로드에 실패했습니다.');
-        }
-
-        return await response.json();
-    } catch (error) {
-        throw error;
-    }
-} 
