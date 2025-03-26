@@ -85,17 +85,18 @@ export async function getUserInfo() {
         });
 
         if (!response.ok) {
-            throw new Error('회원정보 조회에 실패했습니다.');
+            throw new Error(`회원정보 조회 실패: ${response.status}`);
         }
 
         return await response.json();
     } catch (error) {
+        console.error("❌ 회원정보 조회 오류:", error);
         throw error;
     }
 }
 
 // 회원정보 수정
-export async function updateUserInfo(userData) {
+export async function updateUserInfo(formData) {
     try {
         const userId = localStorage.getItem('userId');
         if (!userId) {
@@ -104,20 +105,16 @@ export async function updateUserInfo(userData) {
 
         const response = await fetch(`${API_BASE_URL}/api/users/${userId}`, {
             method: 'PUT',
-            headers: getHeaders(),
-            body: JSON.stringify(userData)
+            body: formData
         });
 
         if (!response.ok) {
             throw new Error('회원정보 수정에 실패했습니다.');
         }
 
-        // return await response.json();
-
-
         const userInfo = await response.json();
 
-        // ✅ 프로필 이미지 URL이 상대 경로라면 서버 주소를 추가
+        // 프로필 이미지 URL이 상대 경로라면 서버 주소를 추가
         if (userInfo.profileImage && !userInfo.profileImage.startsWith('http')) {
             userInfo.profileImage = `${API_BASE_URL}/${userInfo.profileImage}`;
         }

@@ -36,21 +36,13 @@ export async function loadUserInfo() {
         // 프로필 정보 표시
         document.getElementById('profile-email-value').textContent = userInfo.email;
         document.getElementById('profile-nickname-value').textContent = userInfo.nickname;
-        
-        // // ✅ 프로필 이미지 URL이 상대 경로면 API_BASE_URL 추가
-        // let profileImageUrl = userInfo.profileImage;
-        // if (profileImageUrl && !profileImageUrl.startsWith('http')) {
-        //     profileImageUrl = `${API_BASE_URL}${profileImageUrl}`;
-        // }
 
         // 프로필 이미지 표시
         const profileImage = document.querySelector('.profile-edit-image');
         if (profileImage && userInfo.profileImage) {
-            // profileImage.style.backgroundImage = `url(${profileImageUrl})`;
-            
             const imageUrl = userInfo.profileImage.startsWith('http')
-            ? userInfo.profileImage  // 기본 이미지 URL 그대로 사용
-            : `${API_BASE_URL}/${userInfo.profileImage}`;  // 상대 경로일 경우 백엔드 주소 추가
+            ? userInfo.profileImage  
+            : `${API_BASE_URL}/${userInfo.profileImage}`; 
 
             console.log("🔍 최종 프로필 이미지 URL:", imageUrl);
             profileImage.style.backgroundImage = `url(${imageUrl})`;
@@ -59,8 +51,6 @@ export async function loadUserInfo() {
         // 헤더의 프로필 아이콘에도 이미지 설정
         const profileIcon = document.querySelector('.profile-icon');
         if (profileIcon && userInfo.profileImage) {
-            // profileIcon.style.backgroundImage = `url(${profileImageUrl})`;
-        
             const imageUrl = userInfo.profileImage.startsWith('http')
                 ? userInfo.profileImage
                 : `${API_BASE_URL}/${userInfo.profileImage}`;
@@ -96,12 +86,16 @@ export function toggleEditMode() {
 // 프로필 이미지 미리보기
 export function previewProfileEditImage(event) {
     const file = event.target.files[0];
-    if (!file) return;
     
     const reader = new FileReader();
     reader.onload = function(e) {
         const profileImage = document.querySelector('.profile-edit-image');
-        profileImage.style.backgroundImage = `url(${e.target.result})`;
+        
+        if (profileImage) {
+            profileImage.style.backgroundImage = `url(${e.target.result})`;
+        } else {
+            console.error("❌ 프로필 이미지 요소를 찾을 수 없습니다.");
+        }
     };
     reader.readAsDataURL(file);
 }
@@ -113,23 +107,24 @@ export async function updateProfile() {
         const nicknameInput = profilePage.querySelector('.edit-input');
         const profileImageInput = document.getElementById('profile-image-upload');
         
-        // 닉네임 업데이트
+        const formData = new FormData();
+
         if (nicknameInput) {
-            const newNickname = nicknameInput.value;
-            await updateUserInfo({ nickname: newNickname });
-            document.getElementById('profile-nickname-value').textContent = newNickname;
+            formData.append("nickname", nicknameInput.value);
         }
         
-        // 프로필 이미지 업로드
         if (profileImageInput.files.length > 0) {
-            const formData = new FormData();
-            formData.append('file', profileImageInput.files[0]);
-            const response = await uploadProfileImage(formData);
-            
-            // 헤더의 프로필 아이콘에도 이미지 업데이트
-            if (response.profileImage) {
-                document.querySelector('.profile-icon').style.backgroundImage = `url(${response.profileImage})`;
-            }
+            formData.append("profileImage", profileImageInput.files[0]);
+        } else {
+            console.warn("⚠ 프로필 이미지 변경 없음");
+        }
+
+        const updatedUser = await updateUserInfo(formData);
+
+        // 프로필 화면 업데이트
+        document.getElementById('profile-nickname-value').textContent = updatedUser.nickname;
+        if (updatedUser.profileImage) {
+            document.querySelector('.profile-icon').style.backgroundImage = `url(${updatedUser.profileImage})`;
         }
         
         // 수정 모드 해제
