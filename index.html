@@ -93,20 +93,24 @@
         <!-- 게시글 작성 페이지 -->
         <div id="post-add-page" class="container-wider" style="display: none;">
             <h2>게시글 작성</h2>
-            <div class="tab">
-                <p class="tab-title">제목*</p>
-                <input id="post-add-title" type="text" placeholder="제목을 입력해주세요. (최대 26글자)">
-            </div>
-            <div class="tab">
-                <p class="tab-title">내용*</p>
-                <textarea id="post-add-content" placeholder="내용을 입력해주세요."></textarea>
-                <p class="helper-txt">* helper text</p>
-            </div>
-            <div class="tab">
-                <p class="tab-title">이미지</p>
-                <input id="post-add-image" type="file" class="input-img" accept="image/*">
-            </div>
-            <button class="post-submit-button">완료</button>
+            <form onsubmit="addPost(event)">
+                <div class="tab">
+                    <p class="tab-title">제목</p>
+                    <input type="text" id="post-add-title" placeholder="제목을 입력하세요">
+                </div>
+                <div class="tab">
+                    <p class="tab-title">내용</p>
+                    <textarea id="post-add-content" placeholder="내용을 입력하세요"></textarea>
+                </div>
+                <div class="tab">
+                    <p class="tab-title">이미지</p>
+                    <div class="image-upload-container">
+                        <input type="file" id="post-add-image" accept="image/*" onchange="previewAddImage(event)">
+                        <img id="post-add-image-preview" style="display: none; max-width: 80%; margin-top: 10px;">
+                    </div>
+                </div>
+                <button type="submit">작성하기</button>
+            </form>
         </div>
 
         <!-- 게시글 상세 조회 페이지 -->
@@ -192,20 +196,26 @@
         <!-- 게시글 수정 페이지 -->
         <div id="post-edit-page" class="container-wider" style="display: none;">
             <h2>게시글 수정</h2>
-            <div class="tab">
-                <p class="tab-title">제목*</p>
-                <input type="text" id="edit-title">
-            </div>
-            <div class="tab">
-                <p class="tab-title">내용*</p>
-                <textarea id="edit-content"></textarea>
-                <p class="helper-txt">* helper text</p>
-            </div>
-            <div class="tab">
-                <p class="tab-title">이미지</p>
-                <input type="file" class="input-img" accept="image/*">
-            </div>
-            <button onclick="updateCurrentPost()">수정하기</button>
+            <form onsubmit="updateCurrentPost(event)">
+                <div class="tab">
+                    <p class="tab-title">제목</p>
+                    <input type="text" id="post-edit-title" placeholder="제목을 입력하세요">
+                </div>
+                <div class="tab">
+                    <p class="tab-title">내용</p>
+                    <textarea id="post-edit-content" placeholder="내용을 입력하세요"></textarea>
+                </div>
+                <div class="tab">
+                    <p class="tab-title">이미지</p>
+                    <div class="image-upload-container">
+                        <input type="file" id="post-edit-image" accept="image/*" onchange="previewEditImage(event)">
+                        <input type="hidden" id="post-edit-existing-image">
+                        
+                        <img id="post-edit-image-preview" style="display: none; max-width: 80%; margin-top: 10px;">
+                    </div>
+                </div>
+                <button type="submit">수정하기</button>
+            </form>
         </div>
 
         <!-- 회원정보 수정 페이지 -->
@@ -280,7 +290,7 @@
     <script type="module">
         import { showPage, goBack } from './js/main.js';
         import { login, logout, handleRegister } from './js/pages/login.js';
-        import { addPost, updateCurrentPost, deleteCurrentPost, showEditPage } from './js/components/post.js';
+        import { addPost, updateCurrentPost, deleteCurrentPost, showEditPage, previewEditImage, previewAddImage} from './js/components/post.js';
         import { addComment, editComment, saveComment, cancelEdit, deleteComment } from './js/components/comment.js';
         import { previewProfileImage, loadUserInfo, toggleEditMode, updateProfile, previewProfileEditImage, showDeleteAccountModal, deleteAccount, updateUserPassword } from './js/components/profile.js';
         import { showDeleteModal, closeModal } from './js/components/modal.js';
@@ -292,10 +302,11 @@
         window.logout = logout;
         window.handleRegister = handleRegister;
         window.addPost = addPost;
-        // window.viewPost = viewPost;
         window.updateCurrentPost = updateCurrentPost;
         window.deleteCurrentPost = deleteCurrentPost;
         window.showEditPage = showEditPage;
+        window.previewEditImage = previewEditImage;
+        window.previewAddImage = previewAddImage;
         window.addComment = addComment;
         window.editComment = editComment;
         window.saveComment = saveComment;

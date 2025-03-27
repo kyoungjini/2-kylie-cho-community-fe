@@ -181,6 +181,24 @@ export function showEditPage() {
 
     document.getElementById('post-edit-title').value = currentPost.title;
     document.getElementById('post-edit-content').value = currentPost.content;
+
+    // 기존 이미지 처리
+    const imagePreview = document.getElementById('post-edit-image-preview');
+    const existingImageInput = document.getElementById('post-edit-existing-image');
+
+    if (currentPost.image) {
+        const imageUrl = currentPost.image.startsWith('http') 
+            ? currentPost.image 
+            : `${API_BASE_URL}/${currentPost.image}`;
+        
+        imagePreview.src = imageUrl;
+        imagePreview.style.display = 'block';
+        existingImageInput.value = currentPost.image; 
+    } else {
+        imagePreview.style.display = 'none';
+        existingImageInput.value = '';
+    }
+
     showPage('post-edit-page');
 }
 
@@ -192,7 +210,7 @@ export async function updateCurrentPost(event) {
 
     const title = document.getElementById('post-edit-title').value;
     const content = document.getElementById('post-edit-content').value;
-    const imageFile = document.getElementById('post-edit-image').files[0];
+    const imageFile = document.getElementById('post-edit-image')?.files[0];
 
     if (!title || !content) {
         alert('제목과 내용을 모두 입력해주세요.');
@@ -226,4 +244,34 @@ export async function deleteCurrentPost() {
         console.error('게시글 삭제 에러:', error);
         alert(error.message);
     }
+}
+
+// 이미지 미리보기 (게시글 수정)
+export function previewEditImage(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const imagePreview = document.getElementById('post-edit-image-preview');
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        imagePreview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+
+// 이미지 미리보기 (게시글 작성)
+export function previewAddImage(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const imagePreview = document.getElementById('post-add-image-preview');
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        imagePreview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
 } 

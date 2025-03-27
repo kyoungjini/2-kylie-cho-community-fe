@@ -75,9 +75,18 @@ export async function updatePost(postId, title, content, imageFile) {
     try {
         const formData = new FormData();
         formData.append('userId', localStorage.getItem('userId'));
-        if (title) formData.append('title', title);
-        if (content) formData.append('content', content);
-        if (imageFile) formData.append('imageFile', imageFile);
+        formData.append('title', title);
+        formData.append('content', content);
+        
+        if (imageFile) {
+            formData.append('imageFile', imageFile);
+        } else {
+            const existingImageUrl = document.getElementById('post-edit-existing-image').value;
+            
+            if (existingImageUrl) {
+                formData.append('existingImageUrl', existingImageUrl);
+            }
+        }
 
         const response = await fetch(`${API_BASE_URL}/api/posts/${postId}`, {
             method: 'PUT',
