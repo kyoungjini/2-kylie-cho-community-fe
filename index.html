@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/components/modal.css">
     <link rel="stylesheet" href="styles/components/header.css">
+    <link rel="stylesheet" href="styles/components/comment.css">
     <link rel="stylesheet" href="styles/pages/login.css">
     <link rel="stylesheet" href="styles/pages/post-list.css">
     <link rel="stylesheet" href="styles/pages/post-detail.css">
@@ -188,7 +189,7 @@
                 <p class="modal-warning">삭제한 댓글은 복구할 수 없습니다.</p>
                 <div class="modal-button-wrapper">
                     <button onclick="closeModal()" class="modal-cancel-button">취소</button>
-                    <button onclick="deleteComment()" class="modal-ok-button">확인</button>
+                    <button onclick="deleteCurrentComment()" class="modal-ok-button">확인</button>
                 </div>
             </div>
         </div>
@@ -291,7 +292,7 @@
         import { showPage, goBack } from './js/main.js';
         import { login, logout, handleRegister } from './js/pages/login.js';
         import { addPost, updateCurrentPost, deleteCurrentPost, showEditPage, previewEditImage, previewAddImage} from './js/components/post.js';
-        import { addComment, editComment, saveComment, cancelEdit, deleteComment } from './js/components/comment.js';
+        import { addComment, editComment, saveComment, cancelEdit, deleteCurrentComment, showDeleteCommentModal } from './js/components/comment.js';
         import { previewProfileImage, loadUserInfo, toggleEditMode, updateProfile, previewProfileEditImage, showDeleteAccountModal, deleteAccount, updateUserPassword, showDeletePostModal } from './js/components/profile.js';
         import { showDeleteModal, closeModal } from './js/components/modal.js';
 
@@ -311,7 +312,7 @@
         window.editComment = editComment;
         window.saveComment = saveComment;
         window.cancelEdit = cancelEdit;
-        window.deleteComment = deleteComment;
+        window.deleteCurrentComment = deleteCurrentComment;
         window.previewProfileImage = previewProfileImage;
         window.loadUserInfo = loadUserInfo;
         window.toggleEditMode = toggleEditMode;
@@ -322,6 +323,7 @@
         window.updateUserPassword = updateUserPassword;
         window.showDeleteModal = showDeleteModal;
         window.showDeletePostModal = showDeletePostModal;
+        window.showDeleteCommentModal = showDeleteCommentModal;
         window.closeModal = closeModal;
     </script>
 

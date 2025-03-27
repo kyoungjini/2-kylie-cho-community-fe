@@ -1,6 +1,7 @@
 import { showPage } from '../main.js';
 import { getPosts, getPostById, createPost, updatePost, deletePost } from '../api/postApi.js';
 import { API_BASE_URL } from '../api/config.js';
+import { loadComments } from './comment.js';
 
 let currentPost = null;
 
@@ -81,6 +82,7 @@ async function viewPost(postId) {
         const post = await getPostById(postId);
         currentPost = post;
         displayPostDetails(post);
+        await loadComments(postId);
         showPage('post-detail-page');
     } catch (error) {
         console.error('게시글 상세 조회 에러:', error);
