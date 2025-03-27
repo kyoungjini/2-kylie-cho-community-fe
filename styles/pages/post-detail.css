@@ -246,18 +246,3 @@
 .image-upload-container input[type="file"]::file-selector-button:hover {
     background-color: #7F6AEE;
 }
-
-.custom-file-label {
-    display: inline-block;
-    padding: 8px 15px;
-    background-color: #ACA0EB;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin: 10px 10px 10px 0;
-}
-
-.custom-file-label:hover {
-    background-color: #7F6AEE;
-}

@@ -127,7 +127,7 @@
                     </div>
                     <div class="post-actions">
                         <button onclick="showEditPage()" class="post-detail-button">수정</button>
-                        <button onclick="showDeleteModal()" class="post-detail-button">삭제</button>
+                        <button onclick="showDeletePostModal()" class="post-detail-button">삭제</button>
                     </div>
                 </div>
             </div>
@@ -170,7 +170,7 @@
         </div>
 
         <!-- 게시글 삭제 확인 모달 -->
-        <div id="delete-modal" class="modal" style="display: none;">
+        <div id="delete-post-modal" class="modal" style="display: none;">
             <div class="modal-content">
                 <p class="modal-title">게시글을 삭제하시겠습니까?</p>
                 <p class="modal-warning">삭제한 내용은 복구할 수 없습니다.</p>
@@ -182,7 +182,7 @@
         </div>
 
         <!-- 댓글 삭제 확인 모달 -->
-        <div id="comment-delete-modal" class="modal" style="display: none;">
+        <div id="delete-comment-modal" class="modal" style="display: none;">
             <div class="modal-content">
                 <p class="modal-title">댓글을 삭제하시겠습니까?</p>
                 <p class="modal-warning">삭제한 댓글은 복구할 수 없습니다.</p>
@@ -292,7 +292,7 @@
         import { login, logout, handleRegister } from './js/pages/login.js';
         import { addPost, updateCurrentPost, deleteCurrentPost, showEditPage, previewEditImage, previewAddImage} from './js/components/post.js';
         import { addComment, editComment, saveComment, cancelEdit, deleteComment } from './js/components/comment.js';
-        import { previewProfileImage, loadUserInfo, toggleEditMode, updateProfile, previewProfileEditImage, showDeleteAccountModal, deleteAccount, updateUserPassword } from './js/components/profile.js';
+        import { previewProfileImage, loadUserInfo, toggleEditMode, updateProfile, previewProfileEditImage, showDeleteAccountModal, deleteAccount, updateUserPassword, showDeletePostModal } from './js/components/profile.js';
         import { showDeleteModal, closeModal } from './js/components/modal.js';
 
         // 전역 스코프에 함수 노출
@@ -321,6 +321,7 @@
         window.deleteAccount = deleteAccount;
         window.updateUserPassword = updateUserPassword;
         window.showDeleteModal = showDeleteModal;
+        window.showDeletePostModal = showDeletePostModal;
         window.closeModal = closeModal;
     </script>
 

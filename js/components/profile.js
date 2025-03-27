@@ -182,3 +182,10 @@ export async function deleteAccount() {
         alert(error.message);
     }
 } 
+
+// 게시글 삭제 모달 표시
+export function showDeletePostModal() {
+    const modal = document.getElementById('delete-post-modal');
+    modal.style.display = 'block';
+    document.body.classList.add('modal-open');
+}

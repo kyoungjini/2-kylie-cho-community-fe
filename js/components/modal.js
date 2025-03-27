@@ -12,6 +12,6 @@ export function closeModal() {
     //     modal.classList.remove('fade-out');
     //     document.body.classList.remove('modal-open');
     // }, 200);
-    document.getElementById('delete-modal').style.display = 'none';
+    document.getElementById('delete-post-modal').style.display = 'none';
     document.getElementById('delete-account-modal').style.display = 'none';
 } 
