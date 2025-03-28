@@ -1,8 +1,6 @@
-import { getUserInfo, updateUserInfo, updatePassword, deleteAccount as deleteAccountApi, uploadProfileImage } from '../api/userApi.js';
+import { getUserInfo, updateUserInfo, updatePassword, deleteAccount as deleteAccountApi } from '../api/userApi.js';
 import { showPage } from '../main.js';
 import { API_BASE_URL } from '../api/config.js';
-
-let userProfileImage = '';
 
 // 이미지 미리보기 함수
 export function previewProfileImage(event) {
@@ -21,8 +19,6 @@ export function previewProfileImage(event) {
         const uploadedImageUrl = reader.result;
 
         profileUploadDiv.style.backgroundImage = `url(${uploadedImageUrl})`;
-        profileUploadDiv.classList.add('with-uploaded-image');
-        profileUploadDiv.classList.remove('with-default-image');
     };
 
     reader.readAsDataURL(file);
@@ -44,7 +40,6 @@ export async function loadUserInfo() {
             ? userInfo.profileImage  
             : `${API_BASE_URL}/${userInfo.profileImage}`; 
 
-            console.log("🔍 최종 프로필 이미지 URL:", imageUrl);
             profileImage.style.backgroundImage = `url(${imageUrl})`;
         }
 
@@ -55,7 +50,6 @@ export async function loadUserInfo() {
                 ? userInfo.profileImage
                 : `${API_BASE_URL}/${userInfo.profileImage}`;
 
-            console.log("🔍 헤더 프로필 아이콘 이미지 URL:", imageUrl);
             profileIcon.style.backgroundImage = `url(${imageUrl})`;
         }
 
@@ -151,8 +145,6 @@ export async function updateUserPassword() {
             alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
             return;
         }
-
-        // console.log("📌 비밀번호 변경 요청:", { currentPassword, newPassword });
 
         await updatePassword(currentPassword, newPassword);
         

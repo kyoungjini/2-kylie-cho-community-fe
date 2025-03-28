@@ -59,7 +59,6 @@ body.modal-open header {
     background: #e0e0e0; 
     border-radius: 50%; 
     text-align: center;
-    background-image: url('../../assets/images/merong_minion.jpeg');
     background-size: cover;
     background-position: center;
     transition: transform 0.2s ease;

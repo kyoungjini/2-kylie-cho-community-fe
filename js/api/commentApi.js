@@ -47,7 +47,7 @@ export async function createComment(postId, content) {
 }
 
 // 댓글 수정
-export async function updateComment(postId, commentId, content) {
+export async function updateComment(commentId, content) {
     try {
         const response = await fetch(`${API_BASE_URL}/api/comments/${commentId}`, {
             method: 'PUT',

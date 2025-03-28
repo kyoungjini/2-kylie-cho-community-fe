@@ -12,11 +12,6 @@ export async function register(userData) {
         formData.append("profileImage", userData.profileImage);
     }
 
-    console.log("📤 회원가입 요청 데이터:");
-    for (let [key, value] of formData.entries()) {
-        console.log(`${key}: ${value}`);
-    }
-
     try {
         const response = await fetch(`${API_BASE_URL}/api/users/register`, {
             method: 'POST',
@@ -69,8 +64,6 @@ export async function login(credentials) {
             email: document.getElementById("email").value,
             password: document.getElementById("password").value
         };
-    
-        // console.log("보내는 데이터:", loginData);
 
         const response = await fetch(`${API_BASE_URL}/api/users/login`, {
             method: 'POST',

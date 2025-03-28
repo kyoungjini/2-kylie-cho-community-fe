@@ -56,10 +56,6 @@
     background-position: center;
 }
 
-.profile-upload.with-default-image {
-    background-image: url('../../assets/images/merong_minion.jpeg');
-}
-
 .profile-upload.with-uploaded-image .profile-placeholder {
     display: none;
 }

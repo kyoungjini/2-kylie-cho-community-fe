@@ -34,7 +34,6 @@ export async function login(event) {
 
             // 프로필 이미지 설정 (기본 이미지 또는 사용자 업로드 이미지)
             if (profileImageUrl) {
-                console.log("🖼️ 프로필 이미지 설정:", profileImageUrl);
                 profileIcon.style.backgroundImage = `url(${profileImageUrl})`;
                 profileIcon.style.backgroundSize = 'cover';
                 profileIcon.style.backgroundPosition = 'center';

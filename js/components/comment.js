@@ -119,7 +119,6 @@ export function editComment(button) {
 export async function saveComment(button) {
     const commentDiv = button.closest('.comment');
     const textarea = commentDiv.querySelector('.comment-edit-textarea');
-    const actionsDiv = commentDiv.querySelector('.comment-edit-actions');
     
     const newContent = textarea.value.trim();
     if (!newContent) {
@@ -128,7 +127,7 @@ export async function saveComment(button) {
     }
     
     try {
-        await updateComment(currentPostId, currentCommentId, newContent);
+        await updateComment(currentCommentId, newContent);
         await loadComments(currentPostId);
     } catch (error) {
         console.error('댓글 수정 에러:', error);
@@ -139,8 +138,6 @@ export async function saveComment(button) {
 // 댓글 수정 취소
 export function cancelEdit(button) {
     const commentDiv = button.closest('.comment');
-    const textarea = commentDiv.querySelector('.comment-edit-textarea');
-    const actionsDiv = commentDiv.querySelector('.comment-edit-actions');
     
     loadComments(currentPostId);
 }
