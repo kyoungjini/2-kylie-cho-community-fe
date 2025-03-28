@@ -1,5 +1,5 @@
 import { showPage } from '../main.js';
-import { getPosts, getPostById, createPost, updatePost, deletePost } from '../api/postApi.js';
+import { getPosts, getPostById, createPost, updatePost, deletePost, addHeart, removeHeart, checkIsHearted } from '../api/postApi.js';
 import { API_BASE_URL } from '../api/config.js';
 import { loadComments } from './comment.js';
 
@@ -91,7 +91,7 @@ async function viewPost(postId) {
 }
 
 // 게시글 상세 정보 표시
-function displayPostDetails(post) {
+async function displayPostDetails(post) {
     // 게시글 제목
     const postTitle = document.getElementById('post-title');
     if (postTitle) postTitle.innerText = post.title || '제목 없음';
@@ -134,7 +134,67 @@ function displayPostDetails(post) {
 
     // 좋아요 수, 댓글 수, 조회 수
     const likeCount = document.getElementById('like-count');
-    if (likeCount) likeCount.innerText = post.heartCount || 0;
+    if (likeCount) {
+        likeCount.innerText = post.heartCount || 0;
+        
+        // 기존 이벤트 리스너 제거
+        const newLikeCount = likeCount.cloneNode(true);
+        likeCount.parentNode.replaceChild(newLikeCount, likeCount);
+        
+        // 좋아요 상태 확인
+        try {
+            const isHearted = await checkIsHearted(post.id);
+            const statBox = newLikeCount.closest('.stat-box');
+            if (isHearted) {
+                statBox.classList.add('hearted');
+            } else {
+                statBox.classList.remove('hearted');
+            }
+        } catch (error) {
+            console.error('좋아요 상태 확인 에러:', error);
+        }
+
+        // stat-box 전체에 이벤트 리스너 추가
+        const statBox = newLikeCount.closest('.stat-box');
+        statBox.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const isHearted = statBox.classList.contains('hearted');
+            
+            try {
+                if (!localStorage.getItem('userId')) {
+                    alert('로그인이 필요한 기능입니다.');
+                    return;
+                }
+
+                if (isHearted) {
+                    await removeHeart(post.id);
+                    statBox.classList.remove('hearted');
+                } else {
+                    await addHeart(post.id);
+                    statBox.classList.add('hearted');
+                    
+                    // 하트 애니메이션 효과 추가
+                    const heartIcon = document.createElement('span');
+                    heartIcon.className = 'heart-icon animate-heart';
+                    heartIcon.innerHTML = '❤️';
+                    statBox.appendChild(heartIcon);
+                    
+                    // 애니메이션 종료 후 하트 아이콘 제거
+                    setTimeout(() => {
+                        heartIcon.remove();
+                    }, 1000);
+                }
+
+                // 좋아요 수 업데이트
+                const updatedPost = await getPostById(post.id);
+                newLikeCount.innerText = updatedPost.heartCount || 0;
+                currentPost = updatedPost;
+            } catch (error) {
+                console.error('좋아요 처리 에러:', error);
+                alert(error.message);
+            }
+        });
+    }
 
     const commentCount = document.getElementById('comment-count');
     if (commentCount) commentCount.innerText = post.commentCount || 0;

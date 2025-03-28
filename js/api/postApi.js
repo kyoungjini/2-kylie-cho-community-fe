@@ -1,4 +1,5 @@
 import { API_BASE_URL } from './config.js';
+import { getHeaders } from './config.js';
 
 // 게시글 목록 조회
 export async function getPosts(offset = 0, limit = 10) {
@@ -122,6 +123,81 @@ export async function deletePost(postId) {
         }
     } catch (error) {
         console.error('게시글 삭제 에러:', error);
+        throw error;
+    }
+}
+
+// 좋아요 추가
+export async function addHeart(postId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/hearts`, {
+            method: 'POST',
+            headers: getHeaders(),
+            body: JSON.stringify({
+                userId: localStorage.getItem('userId'),
+                postId: postId
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('좋아요 추가에 실패했습니다.');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('좋아요 추가 에러:', error);
+        throw error;
+    }
+}
+
+// 좋아요 취소
+export async function removeHeart(postId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/hearts`, {
+            method: 'DELETE',
+            headers: getHeaders(),
+            body: JSON.stringify({
+                userId: localStorage.getItem('userId'),
+                postId: postId
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('좋아요 취소에 실패했습니다.');
+        }
+
+        // 응답이 비어있는 경우에도 성공으로 처리
+        if (response.status === 204 || response.status === 200) {
+            return true;
+        }
+
+        // 응답이 있는 경우에만 JSON 파싱 시도
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            return await response.json();
+        }
+
+        return true;
+    } catch (error) {
+        console.error('좋아요 취소 에러:', error);
+        throw error;
+    }
+}
+
+// 좋아요 여부 확인
+export async function checkIsHearted(postId) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/hearts/check?userId=${localStorage.getItem('userId')}&postId=${postId}`, {
+            headers: getHeaders()
+        });
+
+        if (!response.ok) {
+            throw new Error('좋아요 여부 확인에 실패했습니다.');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('좋아요 여부 확인 에러:', error);
         throw error;
     }
 } 
