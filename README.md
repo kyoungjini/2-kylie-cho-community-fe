@@ -19,6 +19,7 @@
 - 개발 인원 : 1명
 - 기술 스택 : HTML / CSS / Vanilla.js
 - <a href="https://github.com/100-hours-a-week/2-kylie-cho-community-be">맛추픽추 Backend Github</a>
+- <a href="https://github.com/100-hours-a-week/2-kylie-cho-community-fe/blob/feat/backend-connection/assets/images/week6/matchupicchu_screen.mov">전체 실행 영상</a>
 
 ## ✅ 기능
 
