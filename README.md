@@ -2,11 +2,7 @@
 
 > 카카오 부트캠프 풀스택 6차 과제 (Frontend)
 
-<br/>
-
 <img src="assets/images/week6/logo.png" width="100" />
-
-<br/>
 
 **맛추픽추**는 서울의 맛집과 카페를 공유하는 커뮤니티 웹 서비스입니다.  
 
@@ -43,31 +39,31 @@
 
   |로그인|회원가입|
   |---|---|
-  |<img src="assets/images/week6/login.gif" width="500" />|<img src="assets/images/week6/register.gif" width="500" />|
+  |<img src="assets/images/week6/login.gif" width="400" />|<img src="assets/images/week6/register.gif" width="400" />|
 
 - 게시글 조회 / 생성 / 수정 / 삭제
 
   |게시물 생성|게시글 수정|게시글 삭제|
   |---|---|---|
-  |<img src="assets/images/week6/post_create.gif" width="500" />|<img src="assets/images/week6/post_update.gif" width="500" />|<img src="assets/images/week6/post_delete.gif" width="500" />|
+  |<img src="assets/images/week6/post_create.gif" width="400" />|<img src="assets/images/week6/post_update.gif" width="400" />|<img src="assets/images/week6/post_delete.gif" width="400" />|
 
 - 댓글 조회 / 생성 / 수정 / 삭제
 
   |댓글 생성|댓글 수정|댓글 삭제|
   |---|---|---|
-  |<img src="assets/images/week6/comment_create.gif" width="500" />|<img src="assets/images/week6/comment_update.gif" width="500" />|<img src="assets/images/week6/comment_delete.gif" width="500" />|
+  |<img src="assets/images/week6/comment_create.gif" width="400" />|<img src="assets/images/week6/comment_update.gif" width="400" />|<img src="assets/images/week6/comment_delete.gif" width="400" />|
 
 - 회원정보 수정 / 비밀번호 수정 / 회원 탈퇴 / 로그아웃
 
   |회원정보 수정|비밀번호 수정|회원 탈퇴|로그아웃|
   |---|---|---|---|
-  |<img src="assets/images/week6/user_update.gif" width="500" />|<img src="assets/images/week6/password_update.gif" width="500" />|<img src="assets/images/week6/user_delete.gif" width="500" />|<img src="assets/images/week6/logout.gif" width="500" />|
+  |<img src="assets/images/week6/user_update.gif" width="400" />|<img src="assets/images/week6/password_update.gif" width="400" />|<img src="assets/images/week6/user_delete.gif" width="400" />|<img src="assets/images/week6/logout.gif" width="400" />|
 
 - 좋아요 생성 / 삭제
 
   |좋아요 생성.삭제|
   |---|
-  |<img src="assets/images/week6/heart.gif" width="200" />|
+  |<img src="assets/images/week6/heart.gif" width="400" />|
 
 ## ✅ 회고
 
